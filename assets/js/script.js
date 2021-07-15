@@ -24,7 +24,7 @@ var taskFormHandler = function(event) {
     //check if task is new or one being edited by seeing if it has a data-task-id attribute
     var isEdit = formEl.hasAttribute("data-task-id");
 
-    if (isEdit {
+    if (isEdit) {
         var taskId = formEl.getAttribute("data-task-id");
         completeEditTask(taskNameInput, taskTypeInput, taskId);
     } else {
@@ -104,12 +104,44 @@ var completeEditTask = function(taskName, taskType, taskId) {
     taskSelected.querySelector("span.task-type").textContent = taskType;
 
     alert("Task Updated!");
+
+    //remove data attribute from form
+    formEl.removeAttribute("data-task-id");
+    //update formEl button to go back to saying "Add Task" instead of "Edit Task"
+    formEl.querySelector("#save-task").textContent = "Add Task";
+};
+
+var taskButtonHandler = function(event) {
+    //get target element from event
+    var targetEl = event.target;
+
+    if (targetEl.matches(".edit-btn")) {
+        console.log("edit", targetEl);
+        var taskId = targetEl.getAttribute("data-task-id");
+        completeEditTask(taskId);
+    } else if (targetEl.matches(".delete-btn")) {
+        console.log("delete", targetEl);
+        var taskId = targetEl.getAttribute("data-task-id");
+        deleteTask(taskId);
+    }
+};
+
+var taskStatusChangeHandler = function(event) {
+    console.log(event.target.value);
+
+    //find task list item based on event.target's data-task-id attribute
+    var taskId = event.target.getAttribute("data-task-id");
+
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "'] ");
+
+    //convert value to lower case
+    var statusValue = event.target.value.toLowerCase();
 }
+
+
+
+
+
     
 
-formEl.addEventListener("submit", taskFormHandler);
-var taskButtonHandler = function(event) {
-    console.log(event.target);
-};
-pageContentEl.addEventListener("click", taskButtonHandler);
    
